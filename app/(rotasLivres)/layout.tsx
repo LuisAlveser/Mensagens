@@ -1,10 +1,8 @@
+import { ReactNode } from "react";
 import Image from "next/image";
 import Logo from"@/public/mensagemlogo.png"
-import Link from "next/link";
-export default function Home() {
-
-
-  return (
+export default function LayoutRotas({children}:{children:ReactNode}){
+     return (
     <div className="flex flex-row max-h-screen  bg-white ">
       <div className=" min-h-screen flex flex-col  w-150 rounded-1xl bg-gradient-to-br from-blue-700 via-blue-800 to-black" >
         <div className="flex flex-row  m-4 text-3xl items-center font-extrabold gap-4">
@@ -32,18 +30,9 @@ export default function Home() {
             
       </div>
       <div className="flex-1 flex items-center justify-center bg-white">
-        <div className="max-w-md w-full px-8">
-        
-          <h3 className="text-3xl font-bold text-slate-900 mb-2">Bem-vindo de volta</h3>
-          <p className="text-slate-500 mb-8">Comece a conversar agora mesmo.</p>
-          <Link href={"/cadastro"}>
-          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-200">
-            Entrar na plataforma
-          </button>
-          </Link>
-        </div>
+      {children}
       </div>
    
     </div>
-  );
+     )
 }
