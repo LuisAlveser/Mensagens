@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { Changa_One,Lora } from "next/font/google";
+import { Changa_One,Lora, Geist } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const changaOne=Changa_One({
   subsets: ["latin"],
@@ -21,7 +23,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${changaOne.variable}  h-full antialiased`}
+      className={cn("h-full", "antialiased", changaOne.variable, "font-sans", geist.variable)}
     >
       <body className={lora.className}>{children}</body>
     </html>
