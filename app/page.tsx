@@ -37,7 +37,7 @@ export default function Home() {
           <h3 className="text-3xl font-bold text-slate-900 mb-2">Bem-vindo de volta</h3>
           <p className="text-slate-500 mb-8">Comece a conversar agora mesmo.</p>
           <Link href={"/cadastro"}>
-          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-200">
+          <button className=" cursor-pointer w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-200">
             Entrar na plataforma
           </button>
           </Link>
