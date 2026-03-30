@@ -9,9 +9,9 @@ import {loginShema} from "@/lib/Schemas"
 import { Loader2 } from "lucide-react";
 import {useForm}from "react-hook-form"
 import { useTransition } from "react"
-
+import { useRouter } from 'next/navigation';
 export function FormLogin(){
-  
+  const router=useRouter() 
   const [carregando,start]=useTransition()
   const{register,handleSubmit,formState:{errors}}=useForm({
     resolver:zodResolver(loginShema),
@@ -27,6 +27,7 @@ export function FormLogin(){
      console.log(login)
       if(login?.sucesso){
         console.log(login.sucesso)
+        router.push("/Home")
       }else{
         console.log(login?.menssagem)
       }

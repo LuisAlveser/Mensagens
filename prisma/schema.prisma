@@ -25,6 +25,8 @@ model Sala{
    id String @id @default(uuid())
    nome String 
    categoria  String
+   descricao String 
+   imagem String
    membros MembrosSala[]
    mensagens Mensagem[]
   createdAt DateTime     @default(now())

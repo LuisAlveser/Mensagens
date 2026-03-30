@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs"
 import jwt from"jsonwebtoken"
 import {prisma} from "@/lib/prisma"
 import { cookies } from "next/headers"
+import { string } from "zod"
 export  async function cadastroUsuario(formData:any){
     try {
    
@@ -54,7 +55,7 @@ export  async function cadastroUsuario(formData:any){
 
   try {
    
-    return jwt.verify(token, process.env.SEGREDO!) as { id: number };
+    return jwt.verify(token, process.env.SEGREDO!) as { id: number ,nome:string,imagem:string} ;
   } catch (e) {
     return null;
   }
@@ -86,7 +87,7 @@ export async function loginUsuario(formData:any){
               maxAge: 60 * 60, 
               path: "/",
           })
-         
+          
             return{
                
                 sucesso:true,
@@ -106,4 +107,14 @@ export async function loginUsuario(formData:any){
         }
     }
 
+}
+export async function logoutUsuario() {
+  const cookieStore = await cookies();
+
+  cookieStore.delete("token");
+  
+  return {
+     sucesso: true,
+      mensagem: "Logout realizado com sucesso" 
+    };
 }
