@@ -1,5 +1,5 @@
 💬 Chat Sphere | Salas Temáticas em Realtime
-O Chat Sphere é uma plataforma de conversação instantânea onde usuários podem entrar em salas baseadas em temas específicos (Tecnologia, Games, Esportes, etc.). O projeto foca em performance, segurança com criptografia de ponta e atualização de mensagens em tempo real.
+O Chat Conecta é uma plataforma de conversação instantânea onde usuários podem entrar em salas baseadas em temas específicos (Tecnologia, Games, Esportes, etc.). O projeto foca em performance, segurança com criptografia de ponta e atualização de mensagens em tempo real.
 
 🚀 Funcionalidades
 Autenticação Segura: Sistema de login e cadastro com senhas criptografadas via bcrypt.

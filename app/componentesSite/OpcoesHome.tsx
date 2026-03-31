@@ -29,13 +29,15 @@ export async function OpcoesHome() {
 
      
       <div className="flex flex-col flex-1 gap-2">
-      
+
+        <Link href={"/Home"}>
         <MenuItem Icon={House} label="Dashboard" />
+        </Link>
 
         <MenuItem Icon={Search} label="Procurar Salas" />
 
         <MenuItem Icon={Folder} label="Minhas Salas" />
-        
+
         <Link href={"/Home/CriarSala"}>
         <MenuItem Icon={FolderPlus} label="Criar Sala" />
         </Link>
