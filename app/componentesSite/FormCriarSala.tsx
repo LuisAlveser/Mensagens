@@ -5,15 +5,24 @@ import { Card} from "@/components/ui/card";
 import {Input} from"@/components/ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BrainCircuit, Code2, Coffee, Gamepad2, Loader2, Rocket, Trophy, Tv } from "lucide-react";
-import {  useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useRouter } from 'next/navigation';
 import {zodResolver} from "@hookform/resolvers/zod"
 import z, { string }  from "zod";
 import { useForm } from "react-hook-form";
 import { SalaShema } from "@/lib/Schemas";
-import { criarSala } from "../(server)/SelaController";
-
-export function FormCriarSala(){
+import { criarSala, editarSala } from "../(server)/SalaController";
+interface SalaProps{
+    sala?:{
+    id:string,
+    nome:string,
+    descricao:string,
+    imagem:string,
+    categoria:string,
+    admin:string    
+    }
+}
+export function FormCriarSala({sala}:SalaProps){
     const [carregando,start]=useTransition()
     const router=useRouter()
 
@@ -21,13 +30,26 @@ export function FormCriarSala(){
  const {register,setValue,watch,handleSubmit,formState:{errors}}=useForm({
     resolver:zodResolver(SalaShema),
     defaultValues:{
-        nome:"",
-        descricao:"",
-       
-        categoria:"",
+        nome:sala?sala.nome:"",
+        descricao:sala?sala.descricao:"",
+        categoria:sala?sala.categoria:"",
     }
  })
  const categoriaValor:string = watch("categoria");
+
+const atualizaSala=(data:z.infer<typeof SalaShema>)=>{
+       start(async ()=>{
+        const resposta= await editarSala(data,sala!.id)
+        if(resposta?.sucesso){
+            console.log(resposta.sucesso)
+            router.push("/Home")
+        
+        }else{
+          console.log(resposta?.mensagem)
+        }
+       })
+}
+    
 
  const criar=(data:z.infer<typeof SalaShema>)=>{
   
@@ -43,17 +65,17 @@ export function FormCriarSala(){
         
       }
       else{
-        console.log(sala?.mensssagem)
+        console.log(sala?.mensagem)
       }
     })
  }
     return(
     <div className="flex flex-col w-full h-full items-center ">
     <div className="flex flex-row w-full h-20">
-       <h1 className="text-2xl font-extrabold m-10">Criar  Sala</h1>
+       <h1 className="text-2xl font-extrabold m-10">{sala?"Atualizar Sala":"Criar Sala"}</h1>
     </div>
     <Card className="flex flex-col bg-blue-700 w-200 h-auto items-center">
-        <form className=" flex flex-col gap-4 justify-center " onSubmit={handleSubmit(criar)}>
+        <form className=" flex flex-col gap-4 justify-center " onSubmit={ sala?handleSubmit(atualizaSala):handleSubmit(criar)}>
             <h1 className="text-white font-extrabold text-2xl">Digite o Nome da Sala</h1>
          
          <Input className="bg-white placeholder:text-blue-800 text-blue-800 w-100" placeholder="Nome" type="text" {...register("nome")}/>
@@ -124,7 +146,7 @@ export function FormCriarSala(){
       </SelectContent>
     </Select>
          <Button className={"cursor-pointer  bg-blue-600 hover:bg-blue-700  font-bold w-100 text-white"} type="submit" disabled={carregando}>
-              {carregando?<Loader2  className="size-4 animate-spin"/>:<span>Criar Sala</span>}
+              {carregando?<Loader2  className="size-4 animate-spin"/>:<span>{sala?"Atualizar":"Criar Sala"}</span>}
             </Button>
         </form>
     </Card>

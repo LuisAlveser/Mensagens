@@ -13,6 +13,7 @@ import { CircleX, Loader2 } from "lucide-react";
 
 export function FormCadastro(){
   const [carregando,start]=useTransition()
+  const router=useRouter()
   const {register,handleSubmit,formState:{errors}}=useForm({
       resolver:zodResolver(cadastroShema),
     defaultValues:{
@@ -26,6 +27,7 @@ export function FormCadastro(){
       const usuario= await cadastroUsuario(data)
       if(usuario){
         console.log(usuario.sucesso)
+        router.push("/Home")
       }
        usuario?.menssagem
 

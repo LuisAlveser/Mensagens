@@ -35,8 +35,10 @@ export async function OpcoesHome() {
         </Link>
 
         <MenuItem Icon={Search} label="Procurar Salas" />
-
+        
+        <Link href={"/Home/MinhasSalas"}>
         <MenuItem Icon={Folder} label="Minhas Salas" />
+          </Link>
 
         <Link href={"/Home/CriarSala"}>
         <MenuItem Icon={FolderPlus} label="Criar Sala" />
