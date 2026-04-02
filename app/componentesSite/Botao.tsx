@@ -2,10 +2,11 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
+import { Loader2, Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useTransition } from "react"
 import { logoutUsuario } from "../(server)/UserController"
+import { excluirSala } from "../(server)/SalaController"
 
 interface TituloProp{
     titulo:string 
@@ -33,4 +34,22 @@ export function BotaoSair({titulo}:TituloProp){
             </Button>
     </>
   )
+}
+interface IdSala{
+    id:string
+}
+export function BotaoExcluirSala({id}:IdSala){
+     const router=useRouter()
+    const excluir=async ()=>{
+        const sala= await excluirSala(id)
+        if(sala?.sucesso){
+             router.refresh()
+        }else{
+            console.log(sala?.mensagem)
+        }
+    }
+   
+   return(<>
+    <Trash2 className="text-red-600 cursor-pointer" onClick={excluir} />
+    </>)
 }

@@ -3,6 +3,7 @@ import { buscarSalasCriadas } from "../(server)/SalaController"
 import Image from "next/image";
 import { SquarePen, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { BotaoExcluirSala } from "./Botao";
 export async function ListarSalasUsuario(){
     const salas =await buscarSalasCriadas()
     if(!salas || !salas.salas || salas.salas.length === 0){
@@ -11,6 +12,7 @@ export async function ListarSalasUsuario(){
         </div>
       
     }
+     
      return (
           
            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full p-4 md:p-10">
@@ -35,8 +37,8 @@ export async function ListarSalasUsuario(){
                                 <Link href={`/Home/EditarSala/${item.id}`}>
                                   <SquarePen className="text-white cursor-pointer" />
                                 </Link>
-
-                               <Trash2 className="text-red-600 cursor-pointer" />
+                                <BotaoExcluirSala id={`${item.id}`}/>
+                              
 
                            </CardHeader>
                            

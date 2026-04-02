@@ -29,14 +29,14 @@ model Sala {
   admin     String
   membros   MembrosSala[]
   mensagens Mensagem[]
-  user      User          @relation(fields: [admin], references: [id])
+  user      User          @relation(fields: [admin], references: [id],onDelete: Cascade)
 }
 
 model MembrosSala {
   userId String
   salaId String
-  sala   Sala   @relation(fields: [salaId], references: [id])
-  user   User   @relation(fields: [userId], references: [id])
+  sala   Sala   @relation(fields: [salaId], references: [id],onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id],onDelete: Cascade)
 
   @@id([userId, salaId])
 }
@@ -47,6 +47,6 @@ model Mensagem {
   userId    String
   salaId    String
   createdAt DateTime @default(now())
-  sala      Sala     @relation(fields: [salaId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  sala      Sala     @relation(fields: [salaId], references: [id],onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
 }

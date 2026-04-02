@@ -192,3 +192,36 @@ export async function buscaSalaPorId(id:string) {
     }
     
 }
+export  async function excluirSala(idsala:string){
+     try {
+        const resposta=await buscaSalaPorId(idsala)
+        if(resposta?.success){
+            const urlImagem=resposta.sala.imagem
+            const nome=urlImagem?.split("/").pop()
+            
+            const { data, error  } = await supabaseAdmin.storage
+            .from("SalaImagem")
+            .remove([`capas-salas/${nome}`])
+
+        if(error){
+            return{
+                sucesso:false
+            }
+        }
+        const excluir=await prisma.sala.delete({where:{id:idsala}})
+        if(excluir){
+            return{
+                sucesso:true,
+                mensagem:"Sala excluida com sucesso"
+            }
+        }
+        }
+     } catch (error) {
+         return{
+            sucesso:false,
+            mensagem:error
+         }
+     }   
+
+    
+}
