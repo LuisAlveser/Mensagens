@@ -5,6 +5,6 @@ export default async function EditarSala({params}:{params:{id:string}}){
     const {id } =await params
     const resposta= await buscaSalaPorId(id)
     const sala=resposta?.sala
-    console.log(sala)
+    
     return(<FormCriarSala sala={sala}/>)
 }

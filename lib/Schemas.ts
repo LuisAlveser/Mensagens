@@ -19,3 +19,7 @@ export const SalaShema=z.object({
     categoria:z.string().min(3,"A descrição está muito curta").max(40,"A descrição deve ter menos caracteres"),
     imagem:z.any()
 })
+export const MensagemShema=z.object({
+    conteudo:z.string().min(2,"Mensagem muito curta"),
+   
+})

@@ -1,5 +1,5 @@
 'use server'
-import { supabaseAdmin } from "@/lib/supabase"
+
 import { supabase } from "@/lib/supabase"
 import {prisma} from "@/lib/prisma"
 import { obterUsuarioDoCookie } from "./UserController"
@@ -22,7 +22,7 @@ export async function criarSala(formData: any) {
         const nomeArquivo = `${Date.now()}-${randomUUID()}.${extensao}`
 
       
-        const { error: uploadError } = await supabaseAdmin.storage
+        const { error: uploadError } = await supabase.storage
             .from("SalaImagem")
             .upload(`capas-salas/${nomeArquivo}`, arquivo)
 
@@ -113,7 +113,7 @@ export async function editarSala(formData: any,idsala:string) {
         const UrlCompleta= resposta?.sala?.imagem
         const nome=UrlCompleta?.split("/").pop()
         
-        const { data, error  } = await supabaseAdmin.storage
+        const { data, error  } = await supabase.storage
             .from("SalaImagem")
             .remove([`capas-salas/${nome}`])
 
@@ -131,7 +131,7 @@ export async function editarSala(formData: any,idsala:string) {
         const nomeArquivo = `${Date.now()}-${randomUUID()}.${extensao}`
 
       
-        const { error: uploadError } = await supabaseAdmin.storage
+        const { error: uploadError } = await supabase.storage
             .from("SalaImagem")
             .upload(`capas-salas/${nomeArquivo}`, arquivo)
 
@@ -199,7 +199,7 @@ export  async function excluirSala(idsala:string){
             const urlImagem=resposta.sala.imagem
             const nome=urlImagem?.split("/").pop()
             
-            const { data, error  } = await supabaseAdmin.storage
+            const { data, error  } = await supabase.storage
             .from("SalaImagem")
             .remove([`capas-salas/${nome}`])
 

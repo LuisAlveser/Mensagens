@@ -1,6 +1,7 @@
 import { Card, CardDescription, CardHeader } from "@/components/ui/card"
 import { listarsala } from "../(server)/SalaController"
 import Image from "next/image";
+import Link from "next/link";
 
 export async function ListaSalas() {
     const salas = await listarsala()
@@ -10,7 +11,7 @@ export async function ListaSalas() {
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full p-4 md:p-10">
             {salas?.salas?.map((item) => (
                 <li key={item.id} className="list-none">
-                  
+                  <Link href={`Home/SalaMensagens/${item.id}`}>
                     <Card className="flex flex-col bg-blue-600 hover:scale-105 transition-all duration-300 min-h-[250px] border-none shadow-xl">
                         <CardHeader className="flex flex-row items-center justify-start gap-4 p-6">
                             <div className="relative w-16 h-16 shrink-0"> 
@@ -36,6 +37,7 @@ export async function ListaSalas() {
                             </CardDescription> 
                         </div>
                     </Card>
+                    </Link>
                 </li> 
             ))}
         </ul>
