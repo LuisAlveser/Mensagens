@@ -1,6 +1,6 @@
 'use server'
 
-import { supabase } from "@/lib/supabase"
+import { supabaseAdmin } from "@/lib/supabase"
 import {prisma} from "@/lib/prisma"
 import { obterUsuarioDoCookie } from "./UserController"
 import { success, uuid } from "zod"
@@ -22,14 +22,14 @@ export async function criarSala(formData: any) {
         const nomeArquivo = `${Date.now()}-${randomUUID()}.${extensao}`
 
       
-        const { error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabaseAdmin.storage
             .from("SalaImagem")
             .upload(`capas-salas/${nomeArquivo}`, arquivo)
 
         if (uploadError) throw uploadError
 
        
-        const { data: urlData } = supabase.storage
+        const { data: urlData } = supabaseAdmin.storage
           .from("SalaImagem")
           .getPublicUrl(`capas-salas/${nomeArquivo}`)
         
@@ -113,7 +113,7 @@ export async function editarSala(formData: any,idsala:string) {
         const UrlCompleta= resposta?.sala?.imagem
         const nome=UrlCompleta?.split("/").pop()
         
-        const { data, error  } = await supabase.storage
+        const { data, error  } = await supabaseAdmin.storage
             .from("SalaImagem")
             .remove([`capas-salas/${nome}`])
 
@@ -131,14 +131,14 @@ export async function editarSala(formData: any,idsala:string) {
         const nomeArquivo = `${Date.now()}-${randomUUID()}.${extensao}`
 
       
-        const { error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabaseAdmin.storage
             .from("SalaImagem")
             .upload(`capas-salas/${nomeArquivo}`, arquivo)
 
         if (uploadError) throw uploadError
 
        
-        const { data: urlData } = supabase.storage
+        const { data: urlData } = supabaseAdmin.storage
           .from("SalaImagem")
           .getPublicUrl(`capas-salas/${nomeArquivo}`)
         
@@ -166,7 +166,7 @@ export async function editarSala(formData: any,idsala:string) {
         }
 
     } catch (error) {
-        console.error("ERRO COMPLETO:", error)
+        console.error("erro", error)
         return {
             sucesso: false,
             mensagem: error
@@ -199,7 +199,7 @@ export  async function excluirSala(idsala:string){
             const urlImagem=resposta.sala.imagem
             const nome=urlImagem?.split("/").pop()
             
-            const { data, error  } = await supabase.storage
+            const { data, error  } = await supabaseAdmin.storage
             .from("SalaImagem")
             .remove([`capas-salas/${nome}`])
 
@@ -224,4 +224,26 @@ export  async function excluirSala(idsala:string){
      }   
 
     
+}
+export async function buscarSalaPorNome(nomesala:string){
+    try {
+        const resposta= await prisma.sala.findMany({where:{nome:{contains:nomesala,mode:"insensitive"}}})
+        if(resposta.length===0){
+            return{
+                sucesso:false,
+                mensagem:"Nenhuma sala encontrada"
+            }
+        }else{
+            console.log(resposta)
+            return{
+                sucesso:true,
+                salas:resposta
+            }
+        }
+    } catch (error) {
+        return{
+            sucesso:false,
+        
+        }
+    }
 }

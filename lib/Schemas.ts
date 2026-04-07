@@ -23,3 +23,12 @@ export const MensagemShema=z.object({
     conteudo:z.string().min(2,"Mensagem muito curta"),
    
 })
+export const PesquisaShema=z.object({
+    nomesala:z.string().min(1,"Nome muito curto"),
+   
+})
+export const atualizarContaShema=z.object({
+    nome:z.string().min(3,"Nome muito curto").max(20,"O nome deve ter menos caracteres"),
+    email:z.email("Digite um email válido"),
+    imagem:z.any().optional()
+})

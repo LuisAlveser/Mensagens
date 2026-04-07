@@ -5,7 +5,9 @@ import bcrypt from "bcryptjs"
 import jwt from"jsonwebtoken"
 import {prisma} from "@/lib/prisma"
 import { cookies } from "next/headers"
-import { string } from "zod"
+import { supabaseAdmin } from "@/lib/supabase"
+import { randomUUID } from "crypto"
+
 export  async function cadastroUsuario(formData:any){
     try {
    
@@ -71,7 +73,7 @@ export async function loginUsuario(formData:any){
            
         }
        }
-        const salts:number=10
+     
         const segredo:string=process.env.SEGREDO!
        
        
@@ -117,4 +119,100 @@ export async function logoutUsuario() {
      sucesso: true,
       mensagem: "Logout realizado com sucesso" 
     };
+}
+export async function buscarUserPorId() {
+    try {
+        const usuario= await obterUsuarioDoCookie()
+        const user= await prisma.user.findFirst({
+            where:{id:String(usuario!.id)},
+            select:{nome:true,email:true,imagem:true,senha:false}})
+
+            if(user){
+                return{
+                    sucesso:true,
+                    user:user
+                }
+            }
+        
+    } catch (error) {
+         return{
+            sucesso:false
+         }
+    }
+}
+export async function atualizarUsuario(formData: any) {
+  try {
+    const segredo = process.env.SEGREDO!;
+    const usuario = await obterUsuarioDoCookie();
+
+    if (!usuario) return { sucesso: false, mensagem: "Usuário não autenticado" };
+
+    let urlImagem = usuario.imagem;
+    const arquivo = formData.imagem?.[0] as File | undefined;
+
+   
+    if (arquivo && arquivo instanceof File && arquivo.size > 0) {
+      
+    
+      if (usuario.imagem) {
+        const nomeAntigo = usuario.imagem.split("/").pop();
+        if (nomeAntigo) {
+          await supabaseAdmin.storage
+            .from("UserAvatar")
+            .remove([`avatar/${nomeAntigo}`]);
+        }
+      }
+
+      const extensao = arquivo.name.split('.').pop();
+      const nomeArquivo = `${Date.now()}-${randomUUID()}.${extensao}`;
+
+      const { error: uploadError } = await supabaseAdmin.storage
+        .from("UserAvatar")
+        .upload(`avatar/${nomeArquivo}`, arquivo);
+
+      if (uploadError) throw uploadError;
+
+      const { data: urlData } = supabaseAdmin.storage
+        .from("UserAvatar")
+        .getPublicUrl(`avatar/${nomeArquivo}`);
+      
+      urlImagem = urlData.publicUrl;
+    }
+
+    
+    const novousuario = await prisma.user.update({
+      where: { id: String(usuario.id) },
+      data: {
+        nome: formData.nome,
+        email: formData.email,
+        imagem: urlImagem,
+      },
+    });
+
+   
+    const token = jwt.sign(
+      {
+        id: novousuario.id,
+        nome: novousuario.nome,
+        email: novousuario.email,
+        imagem: novousuario.imagem,
+      },
+      segredo,
+      { expiresIn: "1h" }
+    );
+
+    const cookieStore = await cookies();
+    cookieStore.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60,
+      path: "/",
+    });
+
+    return { sucesso: true, mensagem: "Usuário atualizado com sucesso" };
+
+  } catch (error: any) {
+    console.error("Erro na atualização:", error.message);
+    return { sucesso: false, mensagem: "Erro interno no servidor" };
+  }
 }

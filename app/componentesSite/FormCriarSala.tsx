@@ -8,7 +8,7 @@ import { BrainCircuit, Code2, Coffee, Gamepad2, Loader2, Rocket, Trophy, Tv } fr
 import { useTransition } from "react";
 import { useRouter } from 'next/navigation';
 import {zodResolver} from "@hookform/resolvers/zod"
-import z, { string }  from "zod";
+import z  from "zod";
 import { useForm } from "react-hook-form";
 import { SalaShema } from "@/lib/Schemas";
 import { criarSala, editarSala } from "../(server)/SalaController";
