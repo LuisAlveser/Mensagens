@@ -17,7 +17,7 @@ interface MembrosPros{
 export function ListaDeMembrosSala({membros}:MembrosPros){
    
     return(
-     <div className="mt-auto flex justify-center w-full h-fi">
+     <div className="mt-auto flex justify-center items-center w-full h-fi">
        
         <Card className="flex flex-col w-full max-w-sm p-4 items-center bg-black border-none shadow-xl gap-5">
             <h1 className="text-white">Membros </h1>

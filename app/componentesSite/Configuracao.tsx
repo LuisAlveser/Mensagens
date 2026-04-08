@@ -7,8 +7,10 @@ import { useRouter } from 'next/navigation';
 import {zodResolver} from "@hookform/resolvers/zod"
 import z  from "zod";
 import { useForm } from "react-hook-form";
-import {atualizarUsuario}from "@/app/(server)/UserController"
+import {atualizarUsuario,excluirUsuario}from "@/app/(server)/UserController"
 import {atualizarContaShema} from "@/lib/Schemas"
+import { toast } from "sonner"
+
 interface UserProp{
     user:{
         nome:string,
@@ -48,6 +50,14 @@ export function Configuracao({user}:UserProp){
     })
       
   }
+  const excluir=async ()=>{
+    const resposta= await excluirUsuario();
+    if(resposta?.sucesso){
+        toast.success(resposta.mensagem)
+    }else{
+      toast.error(resposta!.mensagem)
+    }
+  }
     return( 
     <div className="flex flex-col w-full h-full  ">
         <h1 className="text-2xl font-extrabold m-10">Configurações</h1>
@@ -85,7 +95,7 @@ export function Configuracao({user}:UserProp){
           <p className="text-sm text-red-700 mt-1 mb-4">
             Ao excluir sua conta, todos os seus dados serão removidos permanentemente. Esta ação não pode ser desfeita.
           </p>
-          <Button variant="destructive" className="flex gap-2 cursor-pointer">
+          <Button variant="destructive" className="flex gap-2 cursor-pointer" onClick={excluir}>
             <Trash2 className="w-4 h-4" />
             Excluir minha conta
           </Button>

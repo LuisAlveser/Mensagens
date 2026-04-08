@@ -12,6 +12,8 @@ import z  from "zod";
 import { useForm } from "react-hook-form";
 import { SalaShema } from "@/lib/Schemas";
 import { criarSala, editarSala } from "../(server)/SalaController";
+import { toast } from "sonner" 
+
 interface SalaProps{
     sala?:{
     id:string,
@@ -41,7 +43,7 @@ const atualizaSala=(data:z.infer<typeof SalaShema>)=>{
        start(async ()=>{
         const resposta= await editarSala(data,sala!.id)
         if(resposta?.sucesso){
-            console.log(resposta.sucesso)
+           toast.success(String(resposta.mensagem))
             router.push("/Home")
         
         }else{
@@ -60,12 +62,13 @@ const atualizaSala=(data:z.infer<typeof SalaShema>)=>{
         
          console.log(sala)
       if(sala?.sucesso){
-        console.log(sala)
+        toast.success(sala.mensagem)
         router.push("/Home")
         
       }
       else{
-        console.log(sala?.mensagem)
+         toast.error(sala?.mensagem)
+       
       }
     })
  }

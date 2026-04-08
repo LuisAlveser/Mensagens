@@ -10,7 +10,7 @@ import z  from "zod";
 import {cadastroShema} from "@/lib/Schemas"
 import {cadastroUsuario}from "@/app/(server)/UserController"
 import { CircleX, Loader2 } from "lucide-react";
-
+import { toast } from "sonner"
 export function FormCadastro(){
   const [carregando,start]=useTransition()
   const router=useRouter()
@@ -26,7 +26,7 @@ export function FormCadastro(){
     start(async ()=>{
       const usuario= await cadastroUsuario(data)
       if(usuario){
-        console.log(usuario.sucesso)
+       toast.success(usuario.mensagem)
         router.push("/Home")
       }
        usuario?.menssagem

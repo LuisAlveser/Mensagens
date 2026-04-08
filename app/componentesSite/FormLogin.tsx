@@ -10,6 +10,7 @@ import { Loader2 } from "lucide-react";
 import {useForm}from "react-hook-form"
 import { useTransition } from "react"
 import { useRouter } from 'next/navigation';
+import { toast } from "sonner"
 export function FormLogin(){
   const router=useRouter() 
   const [carregando,start]=useTransition()
@@ -26,10 +27,10 @@ export function FormLogin(){
       const login =await loginUsuario(data)
      console.log(login)
       if(login?.sucesso){
-        console.log(login.sucesso)
+        toast.success(login.mensagem)
         router.push("/Home")
       }else{
-        console.log(login?.menssagem)
+       toast.error(login.mensagem)
       }
     })
   }

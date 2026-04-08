@@ -52,7 +52,7 @@ export async function criarSala(formData: any) {
             })
 
             if (salacriada) {
-                return { sucesso: true }
+                return { sucesso: true, mensagem:"Sala criada com sucesso" }
             }
         }
 
@@ -119,7 +119,8 @@ export async function editarSala(formData: any,idsala:string) {
 
         if(error){
             return{
-                sucesso:false
+                sucesso:false,
+                mensagem:"Erro em editar sala"
             }
         }
          

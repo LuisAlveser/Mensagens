@@ -32,12 +32,13 @@ export  async function cadastroUsuario(formData:any){
           })
             return{
                 sucesso:true,
-                messagem:"Cadastro feito com sucesso"
+                mensagem:"Cadastro feito com sucesso"
                
             }
          }else{
             return{
-                menssagem:"Email já cadastrado"
+                sucesso:false,
+                mensagem:"Email já cadastrado"
             }
          }
         
@@ -93,12 +94,12 @@ export async function loginUsuario(formData:any){
             return{
                
                 sucesso:true,
-                menssagem:"Login realizado com sucesso"
+                mensagem:"Login realizado com sucesso"
             }
         }else{
            return{
             sucesso:false,
-            messagem:"Email ao Senha incorreta "
+            mensagem:"Email ao Senha incorreta "
         } 
         }
     } catch (error) {
@@ -215,4 +216,22 @@ export async function atualizarUsuario(formData: any) {
     console.error("Erro na atualização:", error.message);
     return { sucesso: false, mensagem: "Erro interno no servidor" };
   }
+}
+export async function excluirUsuario() {
+    try {
+        const usuario= await obterUsuarioDoCookie()
+        const resposta= await prisma.user.delete({where:{id:String(usuario!.id)}})
+        if(resposta){
+            return{
+                sucesso:true,
+                mensagem:"Conta excluida com sucesso"
+            }
+        }
+    } catch (error) {
+        return{
+            sucesso:false,
+            mensagem:"Erro em excluir conta"
+        }
+    }
+    
 }
