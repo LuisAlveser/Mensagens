@@ -23,7 +23,7 @@ export  async function buscarMembrosPorSala(id:string){
 export async function adicionarmembro(idsala:string) {
     try {
         const usuario = await obterUsuarioDoCookie()
-        const resposta=await prisma.membrosSala.findFirst({where:{userId:String (usuario!.id)}})
+        const resposta=await prisma.membrosSala.findFirst({where:{userId:String (usuario!.id),salaId:idsala}})
 
         if(!resposta){
         

@@ -21,7 +21,7 @@ interface UserProp{
 
 export function Configuracao({user}:UserProp){
     const[carregando,start]=useTransition()
-
+    const router=useRouter()
     const {register,handleSubmit,formState:{errors}}=useForm({
       resolver:zodResolver(atualizarContaShema),
       defaultValues:{
@@ -43,6 +43,7 @@ export function Configuracao({user}:UserProp){
         const resposta= await atualizarUsuario(data)
         if(resposta.sucesso){
           console.log(resposta.mensagem)
+          router.push("/")
         }else{
         console.log(resposta)
         }
@@ -54,6 +55,7 @@ export function Configuracao({user}:UserProp){
     const resposta= await excluirUsuario();
     if(resposta?.sucesso){
         toast.success(resposta.mensagem)
+        
     }else{
       toast.error(resposta!.mensagem)
     }
